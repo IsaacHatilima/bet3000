@@ -7,7 +7,7 @@
 
     class Tags extends Database
     {
-        /* CRUD class for Tags  */
+        /* Create and Delete class for Tags  */
         public $tag;
         function addTag($tag)
         {

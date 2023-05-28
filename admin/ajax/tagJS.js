@@ -54,7 +54,6 @@ function Deletes(x) {
         url: "../core/tagsLogic.php",
         data: {"deleteID" : x},
         success: function (response) {
-            console.log(response);
             if (response == "200") 
             {
                 $("#delMsg").html('Tag Deleted.');

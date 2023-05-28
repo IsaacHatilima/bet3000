@@ -1,3 +1,10 @@
+<?php
+// Instantiate connection to database
+ob_start();
+require_once('../../config/dbConfig.php');
+$object = new Database();
+$object->connect();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,6 +14,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+
+
     <title>Fefes Blog Clone</title>
 </head>
 
@@ -25,7 +39,7 @@
         <div class="container h-100 mt-5">
             <div class="row h-100 justify-content-center align-items-center">
                 <div class="col-10">
-                    <div class="alert alert-primary" role="alert" style="display: none;" id="auth_alert">
+                    <div class="alert alert-primary" role="alert" style="display: none;" id="_alert">
                         <span id="msg"></span>
                     </div>
                     <form>
@@ -33,9 +47,32 @@
                             <label>Title</label>
                             <input type="text" class="form-control" name="title" id="title">
                         </div>
+
+
                         <div class="form-group">
                             <label>Body</label>
                             <textarea class="form-control" rows="15" name="body" id="body"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Tags</label>
+                            <select class="selectpicker form-control" multiple data-live-search="true" id="tags" name="tags">
+                                <?php
+                                    $sql = "SELECT * FROM tags ORDER BY id ASC;";
+                                    $stmt = $object->connect()->prepare($sql);
+                                    $stmt->execute();
+                                    while ($rows = $stmt->fetch()) {
+                                        $id = $rows['id'];
+
+                                        $token = $id;
+
+                                        $cipher_method = 'aes-128-ctr';
+                                        $enc_key = openssl_digest(php_uname(), 'SHA256', TRUE);
+                                        $enc_iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($cipher_method));
+                                        $crypted_token = openssl_encrypt($token, $cipher_method, $enc_key, 0, $enc_iv) . "::" . bin2hex($enc_iv);
+                                        echo '<option value="' . $crypted_token . '">' . $rows['tag'] . '</option>';
+                                    }
+                                ?>
+                            </select>
                         </div>
                         <button class="w-50 mt-5 btn btn-lg btn-primary" type="submit" id="post">Post</button>
                     </form>
@@ -43,7 +80,7 @@
             </div>
         </div>
         <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-
+        <script src="../ajax/blog.js"></script>
     </body>
 
 </html>
