@@ -19,7 +19,6 @@ $('#login').click(function(e){
             cache: false,
             processData: false,
             success: function (response) {
-                console.log(response);
                 if (response == "200") 
                 {
                     $("#msg").html('Authenticated! Redirecting.');

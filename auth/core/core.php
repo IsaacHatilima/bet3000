@@ -22,6 +22,7 @@
                     $DB_Password = $row['password'];
                     $FinalPassword = password_verify($password, $DB_Password);
                     if ($FinalPassword === true) {
+                        $_SESSION['person'] = $row['id'];
                         echo '200'; //Successful Login
                     } else {
                         echo '404'; //Invalid Password
