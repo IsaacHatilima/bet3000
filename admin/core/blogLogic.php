@@ -8,10 +8,7 @@
     class Blogs extends Database
     {
         /* Blog managing Class */
-        public $tags;
-        public $title;
-        public $body;
-
+  
         function addBlog($title, $body, $tags)
         {
             // Created a blog in the databse table
@@ -59,8 +56,21 @@
             }
         }
 
-        function oneToManyRelationship(){
-            
+        function deleteBlog($blogID)
+        {
+            //Delete Tag by ID
+            try {
+                $sql = "DELETE FROM blogs WHERE id = ?;";
+                $stmt = $this->connect()->prepare($sql);
+                $stmt->bindvalue(1, $blogID);
+                if ($stmt->execute()) {
+                    echo "200";
+                } else {
+                    echo "401";
+                }
+            } catch (PDOException $e) {
+                echo '500';
+            }
         }
 
     }
@@ -73,5 +83,17 @@
         $body = $_POST['body'];
         $tags = $_POST['tags'];
         $_blogs->addBlog($title, $body, $tags);
+    }
+
+    // Decrypt ID in readiness for record deleting
+    if (isset($_POST['deleteID'])) {
+        $id = $_POST['deleteID'];
+        list($id, $enc_iv) = explode("::", $id);
+        $cipher_method = 'aes-128-ctr';
+        $enc_key = openssl_digest(php_uname(), 'SHA256', TRUE);
+        $token = openssl_decrypt($id, $cipher_method, $enc_key, 0, hex2bin($enc_iv));
+        $blogID = $token;
+        $_blogs->deleteBlog($blogID);
+        unset($token, $cipher_method, $enc_key, $enc_iv);
     }
 ?>

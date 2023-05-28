@@ -45,3 +45,34 @@ $('#post').click(function (e) {
         });
     }
 });
+
+function Deletes(x) {
+    $("#_delAlert").css("display", "block");
+    $("#_delAlert").removeClass("alert-warning alert-danger").addClass("alert-primary");
+    $("#delMsg").html('Processing! Please Wait...');
+    $.ajax({
+        type: "post",
+        url: "../core/blogLogic.php",
+        data: {"deleteID" : x},
+        success: function (response) {
+            if (response == "200") 
+            {
+                $("#delMsg").html('Blog Deleted.');
+                $("#_delAlert").removeClass("alert-primary alert-warning").addClass("alert-success");
+                setTimeout(function () {
+                    window.location.href = './blogs';
+                }, 2200);
+            } 
+            else if (response === "400") 
+            {
+                $("#delMsg").html('Blog not deleted. Try again.');
+                $("#_delAlert").removeClass("alert-primary").addClass("alert-warning");
+            } 
+            else if (response === "500") 
+            {
+                $("#_delAlert").removeClass("alert-warning alert-primary").addClass("alert-danger");
+                $("#delMsg").html('Server Error');
+            }
+        },
+    });
+}

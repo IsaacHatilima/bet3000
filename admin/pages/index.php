@@ -1,6 +1,10 @@
 <?php
 // Instantiate connection to database
 ob_start();
+session_start();
+if ($_SESSION['person'] == null) {
+    header('Location: ../../auth');
+}
 require_once('../../config/dbConfig.php');
 $object = new Database();
 $object->connect();
@@ -27,15 +31,40 @@ $object->connect();
 <body>
 
     <body class="text-center">
-        <div class="container">
-            <header class="d-flex justify-content-center py-3">
-                <ul class="nav nav-pills">
-                    <li class="nav-item"><a href="." class="nav-link active" aria-current="page">Home</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link">Blogs</a></li>
-                    <li class="nav-item"><a href="./tags" class="nav-link">Tags</a></li>
-                </ul>
-            </header>
-        </div>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Offcanvas navbar large">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Fefes Blog Clone</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar2" aria-controls="offcanvasNavbar2" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar2" aria-labelledby="offcanvasNavbar2Label">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasNavbar2Label">Fefes Blog Clone</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href=".">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="./blogs">Blogs</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="./tags">Tags</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="../core/logout">Logout</a>
+                            </li>
+                        </ul>
+                        <!-- <form class="d-flex mt-3 mt-lg-0" role="search">
+                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-success" type="submit">Search</button>
+                        </form> -->
+                    </div>
+                </div>
+            </div>
+        </nav>
         <div class="container h-100 mt-5">
             <div class="row h-100 justify-content-center align-items-center">
                 <div class="col-10">
@@ -57,20 +86,20 @@ $object->connect();
                             <label>Tags</label>
                             <select class="selectpicker form-control" multiple data-live-search="true" id="tags" name="tags">
                                 <?php
-                                    $sql = "SELECT * FROM tags ORDER BY id ASC;";
-                                    $stmt = $object->connect()->prepare($sql);
-                                    $stmt->execute();
-                                    while ($rows = $stmt->fetch()) {
-                                        $id = $rows['id'];
+                                $sql = "SELECT * FROM tags ORDER BY id ASC;";
+                                $stmt = $object->connect()->prepare($sql);
+                                $stmt->execute();
+                                while ($rows = $stmt->fetch()) {
+                                    $id = $rows['id'];
 
-                                        $token = $id;
+                                    $token = $id;
 
-                                        $cipher_method = 'aes-128-ctr';
-                                        $enc_key = openssl_digest(php_uname(), 'SHA256', TRUE);
-                                        $enc_iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($cipher_method));
-                                        $crypted_token = openssl_encrypt($token, $cipher_method, $enc_key, 0, $enc_iv) . "::" . bin2hex($enc_iv);
-                                        echo '<option value="' . $crypted_token . '">' . $rows['tag'] . '</option>';
-                                    }
+                                    $cipher_method = 'aes-128-ctr';
+                                    $enc_key = openssl_digest(php_uname(), 'SHA256', TRUE);
+                                    $enc_iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($cipher_method));
+                                    $crypted_token = openssl_encrypt($token, $cipher_method, $enc_key, 0, $enc_iv) . "::" . bin2hex($enc_iv);
+                                    echo '<option value="' . $crypted_token . '">' . $rows['tag'] . '</option>';
+                                }
                                 ?>
                             </select>
                         </div>

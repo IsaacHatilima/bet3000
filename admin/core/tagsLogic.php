@@ -8,7 +8,6 @@
     class Tags extends Database
     {
         /* Create and Delete class for Tags  */
-        public $tag;
         function addTag($tag)
         {
             // Created a tag in the databse table
