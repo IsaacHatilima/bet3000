@@ -15,19 +15,26 @@
     <body class="text-center">
         <div class="container h-100 mt-5">
             <div class="row h-100 justify-content-center align-items-center">
-                <form class="col-6">
-                    <div class="form-group">
-                        <label for="formGroupExampleInput">Username</label>
-                        <input type="text" class="form-control" name="username" id="username">
+                <div class="col-10">
+                    <div class="alert alert-primary" role="alert" style="display: none;" id="auth_alert">
+                        <span id="msg"></span>
                     </div>
-                    <div class="form-group">
-                        <label for="formGroupExampleInput2">Password</label>
-                        <input type="password" class="form-control" name="password" id="password">
-                    </div>
-                    <button class="w-50 mt-5 btn btn-lg btn-primary" type="submit">Sign in</button>
-                </form>
+                    <form>
+                        <div class="form-group">
+                            <label for="formGroupExampleInput">Username</label>
+                            <input type="text" class="form-control" name="username" id="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="formGroupExampleInput2">Password</label>
+                            <input type="password" class="form-control" name="password" id="password">
+                        </div>
+                        <button class="w-50 mt-5 btn btn-lg btn-primary" type="submit" id="login">Sign in</button>
+                    </form>
+                </div>
             </div>
         </div>
+        <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+        <script src="./ajax/auth.js"></script>
     </body>
 
 </html>

@@ -1,12 +1,13 @@
 <?php
     ob_start();
     session_start();
-    require_once('../config/dbConfig.php');
+    require_once('../../config/dbConfig.php');
     $object = new Database();
     $object->connect();
 
     class Auth extends Database
     {
+        /* Auth class with login method that takes in username and password. The method checks for a user with the username and then verifies the password. */
         public $username;
         public $password;
         public function login($username, $password)
@@ -21,16 +22,15 @@
                     $DB_Password = $row['password'];
                     $FinalPassword = password_verify($password, $DB_Password);
                     if ($FinalPassword === true) {
-                    //$location = "../admin/pages/";
-                        echo 'Success';
+                        echo '200'; //Successful Login
                     } else {
-                        echo 'Invalid Username or Password';
+                        echo '404'; //Invalid Password
                     }
                 } else {
-                    echo 'Invalid Username or Password';
+                    echo '404'; //Invalid Password
                 }
             } catch (PDOException $e) {
-                echo "Error";
+                echo "5002";
             }
         }
     }

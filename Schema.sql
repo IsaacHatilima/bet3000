@@ -10,7 +10,7 @@ CREATE TABLE users
     date_created DATETIME NULL
 );
 
-INSERT INTO users(firstname, lastname, username, password, status) VALUES('John', 'Doe', 'johndoe', '$2y$10$0Hr1gtwKa8hW65cMBcYH0emCfzJOLHicWjPW5cMcuaWNonv7aAlHO','Active')
+INSERT INTO users(firstname, lastname, username, password, status) VALUES('John', 'Doe', 'johndoe', '$2y$10$0Hr1gtwKa8hW65cMBcYH0emCfzJOLHicWjPW5cMcuaWNonv7aAlHO','Active');
 
 CREATE TABLE tags
 (
