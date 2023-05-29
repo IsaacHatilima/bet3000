@@ -43,7 +43,7 @@
                 <div class="col-12">
                     <?php
                     // Get all blogs
-                    $sql = "SELECT * FROM blogs ORDER BY id ASC;";
+                    $sql = "SELECT * FROM blogs ORDER BY id DESC;";
                     $stmt = $object->connect()->prepare($sql);
                     $stmt->execute();
                     if ($stmt->rowCount()) {

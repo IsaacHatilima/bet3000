@@ -59,7 +59,7 @@ $object->connect();
                     }
 
                     //Fetch all blogs to filter from
-                    $sql = "SELECT * FROM blogs ORDER BY id ASC;";
+                    $sql = "SELECT * FROM blogs ORDER BY id DESC;";
                     $stmt = $object->connect()->prepare($sql);
                     $stmt->execute();
                     if ($stmt->rowCount()) {
