@@ -51,7 +51,7 @@
                             <textarea class="form-control" rows="15" name="body" id="body"></textarea>
                         </div>
                         <div class="form-group">
-                            <label>Tags</label>
+                            <label>Tags (Multi Select)</label>
                             <select class="selectpicker form-control" multiple data-live-search="true" id="tags" name="tags">
                                 <?php
                                 $sql = "SELECT * FROM tags ORDER BY id ASC;";
