@@ -1,4 +1,5 @@
-$('#save_tag').click(function(e){
+$('#save_tag').click(function (e) {
+    //Saves Tag
     if ($.trim($("#tag").val()) === "") {
         $("#_alert").css("display", "block");
         $("#_alert").removeClass("alert-primary").addClass("alert-warning");
@@ -46,6 +47,7 @@ $('#save_tag').click(function(e){
 });
 
 function Deletes(x) {
+    //Deletes tag by ID
     $("#_delAlert").css("display", "block");
     $("#_delAlert").removeClass("alert-warning alert-danger").addClass("alert-primary");
     $("#delMsg").html('Processing! Please Wait...');

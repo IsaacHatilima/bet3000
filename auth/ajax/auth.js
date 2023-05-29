@@ -1,4 +1,5 @@
-$('#login').click(function(e){
+$('#login').click(function (e) {
+    //Login user
     if ($.trim($("#username").val()) === "" || $.trim($("#password").val()) === "") {
         $("#auth_alert").css("display", "block");
         $("#auth_alert").removeClass("alert-primary").addClass("alert-warning");

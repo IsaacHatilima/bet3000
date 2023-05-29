@@ -1,25 +1,4 @@
-<?php
-// Instantiate connection to database
-ob_start();
-session_start();
-if ($_SESSION['person'] == null) {
-    header('Location: ../../auth');
-}
-require_once('../../config/dbConfig.php');
-$object = new Database();
-$object->connect();
-?>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-    <title>Fefes Blog Clone</title>
-</head>
+<?php include '../includes/header.php'; ?>
 
 <body>
 
@@ -63,6 +42,7 @@ $object->connect();
                 </div>
                 <div class="col-12">
                     <?php
+                    // Get all blogs
                     $sql = "SELECT * FROM blogs ORDER BY id ASC;";
                     $stmt = $object->connect()->prepare($sql);
                     $stmt->execute();
@@ -78,29 +58,28 @@ $object->connect();
                                     <h1 class="border-bottom pb-2 mb-0">' . $rows['title'] . '</h1>
                                     <div class="d-flex text-body-secondary pt-3">
                                         <p class="pb-3 mb-0 small lh-sm">' . $rows['body'] . '</p>
-                                    </div>';
+                                    </div>
+                                    <div class="d-flex text-body-secondary pt-3">
+                                        <p class="pb-3 mb-0 small lh-sm">Posted: ' . $rows['date_created'] . '</p>
+                                    </div>
+                                    ';
+
                             echo '
                                     <div class="d-flex text-body-secondary pt-3"><p class="pb-3 mb-0 small lh-sm"> Tags: </p>';
                             //Get Tags from One-To-Many relationship
-                            $tagsql = "SELECT * FROM blogs_tags WHERE blog = ?;";
+                            $tagsql = "SELECT * FROM blogs_tags a, tags b WHERE a.tag = b.id AND blog = ?;";
                             $tagstmt = $object->connect()->prepare($tagsql);
                             $tagstmt->bindvalue(1, $rows['id']);
                             $tagstmt->execute();
                             while ($tagrows = $tagstmt->fetch()) {
-                                //Get Tags values
-                                $sqlvalue = "SELECT * FROM tags WHERE id = ?;";
-                                $tagsqlvaluestmt = $object->connect()->prepare($sqlvalue);
-                                $tagsqlvaluestmt->bindvalue(1, $tagrows['tag']);
-                                $tagsqlvaluestmt->execute();
-                                while ($tagvaluerows = $tagsqlvaluestmt->fetch()) {
-                                    echo '<p class="pb-3 mb-0 small lh-sm" style="margin-left:10px">  #' . $tagvaluerows['tag'] . ' </p>';
-                                }
+                                echo '<p class="pb-3 mb-0 small lh-sm" style="margin-left:10px">  #' . $tagrows['tag'] . ' </p>';
                             }
                             echo '</div>';
                             echo '<button type="button" class="btn btn-danger btn-sm" style="color:white" id="' . $crypted_token . '" onclick="Deletes(this.id);">Delete</button>
                                         </div>';
                         }
                     } else {
+                        //Shown if no blogs are created
                         echo '
                               <div class="container my-5">
                                 <div class="bg-body-tertiary p-5 rounded">
@@ -122,4 +101,4 @@ $object->connect();
             <script src="../ajax/blog.js"></script>
     </body>
 
-</html>
+    </html>

@@ -11,7 +11,7 @@
   
         function addBlog($title, $body, $tags)
         {
-            // Created a blog in the databse table
+            // Create a blog in the databse table
             try {
                 $sql = "INSERT INTO blogs(title,body, date_created,user) VALUES(?,?,?,?);";
                 $stmt = $this->connect()->prepare($sql);
@@ -20,7 +20,7 @@
                 $stmt->bindvalue(3, date('Y-m-d H:i:s'));
                 $stmt->bindvalue(4, $_SESSION['person']);
                 if ($stmt->execute()) {
-                    //Map Blog object to the tags in the blog to tag table
+                    //Maping Blog object to the tags in the blogs_tags table
                     $sql = "SELECT id FROM blogs WHERE title = ? AND body = ?;";
                     $stmt = $this->connect()->prepare($sql);
                     $stmt->bindvalue(1, $title);
@@ -77,7 +77,7 @@
 
     $_blogs = new Blogs();
 
-
+    //Passes blog details to blog creating method
     if (isset($_POST['tags'])) {
         $title = $_POST['title'];
         $body = $_POST['body'];

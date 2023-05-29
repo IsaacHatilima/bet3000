@@ -1,4 +1,5 @@
 $('#post').click(function (e) {
+    // Saves blog to database
     e.preventDefault();
     if ($.trim($("#title").val()) === "" || $.trim($("#body").val()) === "" || $.trim($("#tags").val()) === "") {
         $("#_alert").css("display", "block");
@@ -47,6 +48,7 @@ $('#post').click(function (e) {
 });
 
 function Deletes(x) {
+    // Delete Blog by ID
     $("#_delAlert").css("display", "block");
     $("#_delAlert").removeClass("alert-warning alert-danger").addClass("alert-primary");
     $("#delMsg").html('Processing! Please Wait...');

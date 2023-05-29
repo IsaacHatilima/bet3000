@@ -10,7 +10,7 @@
         /* Create and Delete class for Tags  */
         function addTag($tag)
         {
-            // Created a tag in the databse table
+            // Create a tag in the databse table
             try {
                 $sql = "INSERT INTO tags(tag,date_created,user) VALUES(?,?,?);";
                 $stmt = $this->connect()->prepare($sql);
@@ -48,6 +48,7 @@
 
     $_tags = new Tags();
 
+    //Creating Tag
     if (isset($_POST['tag'])) 
     {
         $tag = $_POST['tag'];
